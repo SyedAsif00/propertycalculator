@@ -7,7 +7,7 @@ import { ProtectedRoutes } from "./protectedRoutes/index";
 import Dashboard from "./components/dashboard/index.js";
 const App = () => {
   const router = createBrowserRouter([
-    { path: "/", element: <Login /> },
+    { path: "/login", element: <Login /> },
     { path: "/signUp", element: <SignUp /> },
     {
       path: "/dashboard",
