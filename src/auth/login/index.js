@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./login.css";
+import { message } from "antd";
 import { auth } from "../../firebase/firebase.config";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -23,6 +24,7 @@ const Login = () => {
     } catch (error) {
       const errorMessage = error.message;
       setErrorMsj(errorMessage);
+      message.error("Unable to login, please check username/password");
     }
   };
   return (
@@ -44,7 +46,7 @@ const Login = () => {
         <button onClick={handleAuthenticateUser} className="login-btn">
           Login
         </button>
-        <span>{errorMsj}</span>
+        <span style={{ color: "red" }}>{errorMsj}</span>
       </form>
     </div>
   );

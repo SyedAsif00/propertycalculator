@@ -10,6 +10,7 @@ import { Button } from "antd";
 import AntdModal from "../antdmodal/index";
 import Modal from "../antdmodal/index";
 import { getAuth, signOut } from "firebase/auth";
+import { Create, List } from "@mui/icons-material";
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -28,28 +29,32 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
-          </li>
-          <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          <Link to="/dashboard" style={{ textDecoration: "none" }}>
             <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Users</span>
+              <DashboardIcon className="icon" />
+              <span>Dashboard</span>
             </li>
           </Link>
-
+          <p className="title">INPUT</p>
+          <Link to="/form" style={{ textDecoration: "none" }}>
+            <li>
+              <Create className="icon" />
+              <span>Form</span>
+            </li>
+          </Link>
+          {/* 
           <li>
             <PsychologyOutlinedIcon className="icon" />
             <span>Logs</span>
-          </li>
+          </li> */}
 
           <p className="title">USER</p>
-          <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
-          </li>
+          <Link to="/profile" style={{ textDecoration: "none" }}>
+            <li>
+              <AccountCircleOutlinedIcon className="icon" />
+              <span>Profile</span>
+            </li>
+          </Link>
           <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
