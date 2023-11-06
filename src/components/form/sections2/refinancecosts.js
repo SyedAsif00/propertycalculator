@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import formatNumberWithCommas from "./utils";
-import "./refinanceCosts.css";
-
+import "./refinancecosts.css";
 const RefinanceCosts = () => {
   const [refinanceData, setRefinanceData] = useState({
-    firstMortgageBalance: 0,
-    firstMortgageExitFees: 0,
+    firstMortgageBalance: null,
+    firstMortgageExitFees: null,
     firstMortgageCreditor: "",
-    secondMortgageBalance: 0,
-    secondMortgageExitFees: 0,
+    secondMortgageBalance: null,
+    secondMortgageExitFees: null,
     secondMortgageCreditor: "",
-    payoutOtherCreditors: 0,
+    payoutOtherCreditors: null,
     otherCreditorsNames: "",
   });
 
@@ -23,8 +21,13 @@ const RefinanceCosts = () => {
 
   return (
     <div>
-      <table className="refinance_costs">
+      <table className="refinance_costs" style={{ marginTop: "20px" }}>
         <tbody>
+          <tr>
+            <i>
+              <u>Refinance Costs</u>
+            </i>
+          </tr>
           <tr>
             <td>First Mortgage Balance</td>
             <td>
@@ -39,6 +42,8 @@ const RefinanceCosts = () => {
             </td>
             <td>
               <input
+                placeholder="$0"
+                className="right"
                 type="number"
                 value={refinanceData.firstMortgageBalance}
                 onChange={(e) =>
@@ -52,6 +57,8 @@ const RefinanceCosts = () => {
             <td></td>
             <td>
               <input
+                placeholder="$0"
+                className="right"
                 type="number"
                 value={refinanceData.firstMortgageExitFees}
                 onChange={(e) =>
@@ -74,6 +81,8 @@ const RefinanceCosts = () => {
             </td>
             <td>
               <input
+                placeholder="$0"
+                className="right"
                 type="number"
                 value={refinanceData.secondMortgageBalance}
                 onChange={(e) =>
@@ -87,6 +96,8 @@ const RefinanceCosts = () => {
             <td></td>
             <td>
               <input
+                placeholder="$0"
+                className="right"
                 type="number"
                 value={refinanceData.secondMortgageExitFees}
                 onChange={(e) =>
@@ -109,6 +120,8 @@ const RefinanceCosts = () => {
             </td>
             <td>
               <input
+                placeholder="$0"
+                className="right"
                 type="number"
                 value={refinanceData.payoutOtherCreditors}
                 onChange={(e) =>

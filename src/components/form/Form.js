@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./form.css";
+import "./index.css";
 import Sidebar from "../sidebar/index";
-import { Button, Divider, Steps } from "antd";
+import { Button, Divider } from "antd";
 import { businessButton } from "../../styles/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -12,15 +13,12 @@ import ExpectedIssues from "./sections/ExpectedIssues";
 import RequestedLoanTerms from "./sections/RequestedLoanTerms";
 import RequestedLoanBreakdown from "./sections/RequestedLoanBreakdown";
 
-const { Step } = Steps;
-
 const Form = () => {
   const navigate = useNavigate();
   const handleNav = () => {
     navigate("/dashboard");
   };
 
-  // Define a single object to hold all the form data
   const [formData, setFormData] = useState({
     borrowerDetails: undefined,
     securityDetails: {},
@@ -48,16 +46,6 @@ const Form = () => {
       ),
     },
     {
-      title: "Requested Loan Breakdown",
-      content: (
-        <RequestedLoanBreakdown
-          status={formData.requestedLoanBreakdown.status}
-          values={formData.requestedLoanBreakdown.values}
-          onEdit={() => setFormData({ ...formData, currentStep: 1 })}
-        />
-      ),
-    },
-    {
       title: "Security Details",
       content: (
         <SecurityDetails
@@ -66,6 +54,16 @@ const Form = () => {
             setFormData({ ...formData, securityDetails: data })
           }
           onEdit={() => setFormData({ ...formData, currentStep: 2 })}
+        />
+      ),
+    },
+    {
+      title: "Requested Loan Breakdown",
+      content: (
+        <RequestedLoanBreakdown
+          status={formData.requestedLoanBreakdown.status}
+          values={formData.requestedLoanBreakdown.values}
+          onEdit={() => setFormData({ ...formData, currentStep: 1 })}
         />
       ),
     },
@@ -127,15 +125,17 @@ const Form = () => {
 
         <Divider />
 
-        <Steps current={formData.currentStep}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        <Divider />
-
         <div className="steps-content">
-          {steps[formData.currentStep].content}
+          <div className="left-side">
+            {steps[0].content}
+            {steps[1].content}
+            {steps[2].content}
+          </div>
+          <div className="right-side">
+            {steps[3].content}
+            {steps[4].content}
+            {steps[5].content}
+          </div>
         </div>
         <Divider />
 

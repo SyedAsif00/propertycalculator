@@ -40,12 +40,12 @@ button {
   width: 280px;
 }
 
-input {
+/* input {
   border-radius: 5px;
   outline: none;
   border: 1px solid gray;
   padding: 15px;
-}
+} */
 .inputEmail {
   margin-bottom: 20px;
 }

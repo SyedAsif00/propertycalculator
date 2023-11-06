@@ -1,12 +1,15 @@
 import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App.css";
 import Login from "./auth/login/index";
 import SignUp from "./auth/signup/index";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthContext } from "./authContext/AuthContext";
-import { ProtectedRoutes } from "./protectedRoutes/index";
 import Dashboard from "./components/dashboard/index.js";
-import Form from "./components/form/Form";
+import Form2 from "./components/form/Form2";
 import UserProfile from "./components/profile/profile";
+import { ProtectedRoutes } from "./protectedRoutes/index";
+import "./firebase/firebase.config";
+import "./firebase/storage";
 const App = () => {
   const router = createBrowserRouter([
     { path: "/login", element: <Login /> },
@@ -23,7 +26,7 @@ const App = () => {
       path: "/form",
       element: (
         <ProtectedRoutes>
-          <Form />
+          <Form2 />
         </ProtectedRoutes>
       ),
     },

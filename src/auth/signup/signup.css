@@ -39,13 +39,13 @@ button {
   flex-direction: column;
   width: 280px;
 }
-
+/* 
 input {
   border-radius: 5px;
   outline: none;
   border: 1px solid gray;
   padding: 15px;
-}
+} */
 .inputEmail {
   margin-bottom: 20px;
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input, Row, Col, Form } from "antd";
+import { headingStyles, squareInputStyle } from "./config";
 
 function BorrowerDetails({ data, setData }) {
   const createInitialRow = () => ({
@@ -22,19 +23,12 @@ function BorrowerDetails({ data, setData }) {
     setData(updatedRows);
   };
 
-  const squareInputStyle = {
-    border: "1px solid #d9d9d9",
-    borderRadius: "0px",
-    height: "40px",
-    padding: "3px",
-  };
-
   return (
-    <div style={{ maxWidth: "1100px", margin: "0px" }}>
-      <h2>Borrower Details</h2>
+    <div style={{ maxWidth: "1200px", margin: "0px" }}>
+      <p style={headingStyles}>Borrower Details</p>
 
       <Form layout="vertical">
-        <Row style={{ marginBottom: "10px" }}>
+        <Row style={{ marginBottom: "5px" }}>
           <Col span={5}>
             <strong>Broker Contact</strong>
           </Col>

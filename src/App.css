@@ -1,0 +1,6 @@
+input:not(:disabled)::placeholder {
+  color: #0432ff !important;
+}
+select {
+  transform: translateX(-2px);
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Form } from "antd";
-import { squareInputStyle } from "./config";
+import { headingStyles, squareInputStyle } from "./config";
 
 function SecurityDetails() {
   const createInitialRow = () => ({
@@ -10,8 +10,8 @@ function SecurityDetails() {
     postcode: "",
     estValue: null,
     newLVR: null,
-    currentLoan: null,
     newLoan: 0,
+    currentLoan: null,
     cashOut: 0,
   });
 
@@ -53,7 +53,7 @@ function SecurityDetails() {
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0px" }}>
-      <h2>Security (property/ies offered for security)</h2>
+      <p style={headingStyles}>Security (property/ies offered for security)</p>
 
       <Form layout="vertical">
         <Row style={{ marginBottom: "10px" }}>
@@ -64,8 +64,8 @@ function SecurityDetails() {
             "Postcode",
             "Est Value",
             "New LVR",
-            "Current Loan",
             "New Loan",
+            "Current Loan",
             "Cash Out",
           ].map((header, index) => (
             <Col key={header} span={index === 0 || index === 1 ? 5 : 2}>
@@ -77,34 +77,39 @@ function SecurityDetails() {
         {rows.map((row, rowIndex) => (
           <Row key={rowIndex} style={{ marginBottom: "0px" }}>
             {Object.entries(row).map(([key, value], index) => {
-              if (key !== "newLoan" && key !== "cashOut") {
+              if (true) {
                 return (
                   <Col key={key} span={index < 2 ? 5 : 2}>
                     <Input
                       name={key}
                       value={value}
+                      disabled={key === "newLoan" || key === "cashOut"}
                       onChange={(e) => handleChange(e, rowIndex)}
                       style={squareInputStyle}
+                      // Adding placeholders
+                      placeholder={
+                        key === "streetAddress"
+                          ? "Property " + Number(rowIndex + 1)
+                          : key === "suburb"
+                          ? "Suburb"
+                          : key === "state"
+                          ? "State"
+                          : key === "postcode"
+                          ? "Postcode"
+                          : key === "estValue"
+                          ? "$0"
+                          : key === "newLVR"
+                          ? "0.00%"
+                          : key === "currentLoan"
+                          ? "$0"
+                          : "$0"
+                      }
                     />
                   </Col>
                 );
               }
               return null;
             })}
-            <Col span={2}>
-              <Input
-                value={row.newLoan.toFixed(2)}
-                style={squareInputStyle}
-                disabled
-              />
-            </Col>
-            <Col span={2}>
-              <Input
-                value={row.cashOut.toFixed(2)}
-                style={squareInputStyle}
-                disabled
-              />
-            </Col>
           </Row>
         ))}
 
@@ -114,7 +119,7 @@ function SecurityDetails() {
           </Col>
           <Col span={4}></Col>
           <Col span={2}></Col>
-          <Col span={2}></Col>
+          <Col span={4}></Col>
           <Col span={2}>
             <strong>{getTotal("estValue")}</strong>
           </Col>

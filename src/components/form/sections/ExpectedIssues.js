@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Input, Row, Col, Form, Checkbox } from "antd";
+import { DataContext } from "../Form2";
 
 function ExpectedIssues() {
   const issuesList = [
@@ -8,6 +9,7 @@ function ExpectedIssues() {
     "LVR",
     "Rate expectations",
   ];
+  const { updateData } = useContext(DataContext);
 
   const initialState = issuesList.reduce((acc, issue) => {
     acc[issue] = { ticked: false, comment: "" };
@@ -17,18 +19,28 @@ function ExpectedIssues() {
   const [issuesState, setIssuesState] = useState(initialState);
 
   const handleCheckChange = (issue) => {
-    setIssuesState((prevState) => ({
-      ...prevState,
-      [issue]: { ...prevState[issue], ticked: !prevState[issue].ticked },
-    }));
+    setIssuesState((prevState) => {
+      const newState = {
+        ...prevState,
+        [issue]: { ...prevState[issue], ticked: !prevState[issue].ticked },
+      };
+      updateData("issues", newState);
+      return newState;
+    });
   };
+  console.log(issuesState);
 
   const handleCommentChange = (e, issue) => {
     const comment = e.target.value;
-    setIssuesState((prevState) => ({
-      ...prevState,
-      [issue]: { ...prevState[issue], comment },
-    }));
+    setIssuesState((prevState) => {
+      const newState = {
+        ...prevState,
+        [issue]: { ...prevState[issue], comment },
+      };
+      console.log(newState);
+      updateData("issues", newState);
+      return newState;
+    });
   };
 
   return (
