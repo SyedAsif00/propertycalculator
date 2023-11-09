@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 109vh !important;
   flex-direction: column;
   background: linear-gradient(
       rgba(255, 255, 255, 0.7),
@@ -56,4 +56,10 @@ label {
 }
 input::placeholder {
   color: gray;
+}
+
+
+.inputEmail, .inputPass{
+  border-bottom: 1px solid black;
+  width: 100%;
 }
