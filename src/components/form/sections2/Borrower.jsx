@@ -77,7 +77,7 @@ const Borrower = (props) => {
             const row = `row${index + 1}`; // row1, row2, row3
             return (
               <tr key={row}>
-                <td>{createInput(row, "brokerContact", "Name")}</td>
+                <td>{createInput(row, "brokerContact", ["Name","Tel","Email"][index])}</td>
                 <td>{createInput(row, "borrower", "Person/Company Name")}</td>
                 <td>{createInput(row, "guarantor", "Person/Company Name")}</td>
                 <td>{createInput(row, "tel", "Tel")}</td>

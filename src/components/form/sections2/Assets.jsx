@@ -168,7 +168,11 @@ const Assets = ({ initialData }) => {
               <td>
                 <input
                   type="text"
-                  placeholder={`$${(
+                  className={
+                    property.currentValue - property.currentLoan < 0 &&
+                    "pinkify redify"
+                  }
+                  placeholder={`$${Math.abs(
                     property.currentValue - property.currentLoan
                   ).toFixed(2)}`}
                   disabled

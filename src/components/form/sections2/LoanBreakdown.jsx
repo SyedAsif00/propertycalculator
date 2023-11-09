@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import formatNumberWithCommas from "./utils";
 import PurchaseCosts from "./purchasecosts";
 import "./loanbreakdown.css";
 import RefinanceCosts from "./refinancecosts";
 import SettlementCosts from "./settlements";
+import { DataContext } from "../Form2";
 
 const labels = {
   firstMortgage: "First Mortgage Loan Advance",
@@ -17,9 +18,13 @@ const placeholders = {
   borrower: "$0",
 };
 
-const LoanBreakdown = ({ firstMortgage = null }) => {
+const LoanBreakdown = () => {
+  const {
+    data: { firstMortgage = null },
+  } = useContext(DataContext);
+  console.log(firstMortgage);
   const [data, setData] = useState({
-    sources: { firstMortgage: firstMortgage, vendor: null, borrower: null },
+    sources: { vendor: null, borrower: null },
   });
 
   // Generic update function to handle input changes
@@ -33,10 +38,12 @@ const LoanBreakdown = ({ firstMortgage = null }) => {
   };
 
   // Calculate the total
-  const total = Object.values(data.sources).reduce(
-    (acc, value) => acc + parseFloat(value ? value : 0),
-    0
-  );
+  const total =
+    firstMortgage +
+    Object.values(data.sources).reduce(
+      (acc, value) => acc + parseFloat(value ? value : 0),
+      0
+    );
 
   return (
     <div>
@@ -49,6 +56,17 @@ const LoanBreakdown = ({ firstMortgage = null }) => {
           </tr>
         </thead>
         <tbody>
+          <tr key={"firstMortgage"}>
+            <td style={{ fontWeight: "400" }}>{labels["firstMortgage"]}</td>
+            <td style={{ textAlign: "right" }}>
+              <input
+                placeholder={placeholders["firstMortgage"]}
+                type="text"
+                value={"$" + firstMortgage}
+                disabled
+              />
+            </td>
+          </tr>
           {Object.keys(data.sources).map((key) => (
             <tr key={key}>
               <td style={{ fontWeight: "400" }}>{labels[key]}</td>
@@ -56,8 +74,13 @@ const LoanBreakdown = ({ firstMortgage = null }) => {
                 <input
                   placeholder={placeholders[key]}
                   type="text"
-                  value={data.sources[key]}
-                  onChange={(e) => handleInputChange(key, e.target.value)}
+                  value={`$${data.sources[key] ?? 0}`}
+                  onChange={(e) => {
+                    handleInputChange(
+                      key,
+                      parseFloat(e.target.value?.replace("$", "")) || 0
+                    );
+                  }}
                 />
               </td>
             </tr>
@@ -65,11 +88,13 @@ const LoanBreakdown = ({ firstMortgage = null }) => {
         </tbody>
         <tfoot style={{ borderTop: "1px solid black" }}>
           <tr>
-            <td style={{ fontWeight: "bold" }}>Total</td>
-            <td style={{ fontWeight: "bold", width: "40px" }}>
+            <td>
+              <input value={"Total"} disabled></input>
+            </td>
+            <td style={{ width: "40px" }} className="bolder">
               <input
+                className="bolder"
                 value={"$" + formatNumberWithCommas(total)}
-                style={{ fontWeight: 800 }}
                 disabled
               ></input>
             </td>
@@ -84,9 +109,9 @@ export default function Breakdown() {
   return (
     <div>
       <LoanBreakdown />
-      <PurchaseCosts/>
-      <RefinanceCosts/>
-      <SettlementCosts/>
+      <PurchaseCosts />
+      <RefinanceCosts />
+      <SettlementCosts />
     </div>
   );
 }

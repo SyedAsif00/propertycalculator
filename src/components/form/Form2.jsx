@@ -20,7 +20,10 @@ const DataProvider = ({ children, onData }) => {
     setData((prevData) => {
       const updatedData = {
         ...prevData,
-        [key]: { ...prevData[key], ...newData },
+        [key]:
+          typeof newData === "object"
+            ? { ...prevData[key], ...newData }
+            : newData,
       };
       onData(updatedData); // Notify parent component
       return updatedData;

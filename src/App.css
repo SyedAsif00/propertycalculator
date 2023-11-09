@@ -1,6 +1,76 @@
 input:not(:disabled)::placeholder {
   color: #0432ff !important;
+  background-color: white !important;
+}
+
+input {
+  background-color: white !important;
+  color: #0432ff ;
 }
 select {
   transform: translateX(-2px);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-family: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 11px !important;
+  color: #0432ff ;
+}
+select::-ms-expand {
+  display: none;
+}
+.fifty-width {
+  width: 120px !important;
+}
+select {
+  padding: 0px !important;
+}
+
+.pinkify::placeholder,
+.pinkify {
+  color: red !important;
+}
+
+.redify::placeholder,
+.redify {
+  color: red !important;
+}
+
+.greenify::placeholder {
+  color: green;
+}
+
+.yelloify {
+  background-color: yellow;
+}
+
+.color-blue {
+  color: #0432ff;
+}
+
+.request-td {
+  transform: translateX(-45px);
+}
+
+.issues-td {
+  transform: translateX(-52px);
+}
+.issues-td-1 {
+  transform: translateX(-120px);
+}
+input:disabled {
+  color: black ;
+}
+
+td{
+  font-size: 11px !important;
+}
+td.bolder{
+  font-weight: 900;
+}
+
+.labelifreq{
+  width: 140px !important;
+  transform: translateX(-2.5px);
 }

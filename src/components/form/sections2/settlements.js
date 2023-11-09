@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { DataContext } from "../Form2";
 
-const SettlementCosts = ({ firstMortgage = 12 }) => {
+const SettlementCosts = ({}) => {
   const [costs, setCosts] = useState({
     ancillary: null,
     lenderEstabFeePercent: null,
@@ -15,17 +16,21 @@ const SettlementCosts = ({ firstMortgage = 12 }) => {
     prepaidInterest: null,
     borrowerCashDistribution: null, // negative value as per the example given
   });
+  const {
+    data: { firstMortgage = null },
+  } = useContext(DataContext);
 
   const handleInputChange = (name, value) => {
     const floatValue = parseFloat(value);
     setCosts((prevCosts) => ({
       ...prevCosts,
       [name]: isNaN(floatValue) ? 0 : floatValue,
-      lenderEstabFee: (costs.lenderEstabFeePercent * costs.ancillary) / 100,
+      lenderEstabFee: (costs.lenderEstabFeePercent * firstMortgage) / 100,
       brokerageFee: (costs.brokerageFeePercent * costs.ancillary) / 100,
     }));
   };
 
+  console.log(costs, firstMortgage);
   const calculatePrepaidInterest = () => {
     // Assuming a basic calculation for prepaid interest
     // This will likely need to be updated with the correct logic
@@ -34,7 +39,6 @@ const SettlementCosts = ({ firstMortgage = 12 }) => {
       12;
     return parseFloat(interest?.toFixed(2));
   };
-
   return (
     <div>
       <table className="settlement_costs" style={{ marginTop: "20px" }}>
@@ -47,13 +51,16 @@ const SettlementCosts = ({ firstMortgage = 12 }) => {
           <tr>
             <td>Ancillary (overdue rates, water, land tax)</td>
             <td></td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
-                type="number"
                 placeholder="$0"
-                step="null1"
-                value={costs.ancillary}
-                onChange={(e) => handleInputChange("ancillary", e.target.value)}
+                value={`$${costs.ancillary ?? 0}`}
+                onChange={(e) =>
+                  handleInputChange(
+                    "ancillary",
+                    e.target.value?.replace("$", "")
+                  )
+                }
               />
             </td>
           </tr>
@@ -61,52 +68,78 @@ const SettlementCosts = ({ firstMortgage = 12 }) => {
             <td>Lender Estab Fee (inc GST)</td>
             <td>
               <input
-                type="number"
                 placeholder="$0"
-                step="null1"
-                value={costs.lenderEstabFeePercent}
+                value={`${costs.lenderEstabFeePercent ?? 0}%`}
                 onChange={(e) =>
-                  handleInputChange("lenderEstabFeePercent", e.target.value)
+                  handleInputChange(
+                    "lenderEstabFeePercent",
+                    e.target.value?.replace("%", "")
+                  )
                 }
               />
-              %
             </td>
-            <td>${(costs.lenderEstabFeePercent * costs.ancillary) / 100}</td>
+            <td style={{ textAlign: "right" }}>
+              <input
+                className="reee"
+                disabled
+                value={`$
+                ${costs.lenderEstabFee}
+                `}
+              />
+            </td>
           </tr>
           <tr>
             <td>Brokerage Fee (inc GST)</td>
             <td>
               <input
-                type="number"
                 placeholder="$0"
-                step="null1"
-                value={costs.brokerageFeePercent}
+                value={`${costs.brokerageFeePercent ?? 0}%`}
                 onChange={(e) =>
-                  handleInputChange("brokerageFeePercent", e.target.value)
+                  handleInputChange(
+                    "brokerageFeePercent",
+                    e.target.value?.replace("%", "")
+                  )
                 }
               />
-              %
             </td>
-            <td>${(costs.brokerageFeePercent * costs.ancillary) / 100}</td>
+            <td style={{ textAlign: "right" }}>
+              <input
+                disabled
+                value={`$${
+                  (costs.brokerageFeePercent * costs.ancillary) / 100
+                }`}
+              />
+            </td>
           </tr>
           <tr>
             <td>Lender Legal Fee</td>
             <td></td>
-            <td>${costs.lenderLegalFee?.toFixed(2)}</td>
+            <td style={{ textAlign: "right" }}>
+              <input
+                disabled
+                value={`$${costs.lenderLegalFee?.toFixed(2) ?? 0}`}
+              />
+            </td>
           </tr>
           <tr>
             <td>
               <input
                 placeholder="Label if req."
+                className="labelifreq"
                 onChange={(e) => handleInputChange("label1", e.target.value)}
               ></input>
             </td>
             <td></td>
-            <td>
-              {" "}
+            <td style={{ textAlign: "right" }}>
               <input
                 placeholder="$0"
-                onChange={(e) => handleInputChange("label1val", e.target.value)}
+                value={`$${costs.label2val ?? 0}`}
+                onChange={(e) =>
+                  handleInputChange(
+                    "label2val",
+                    e.target.value?.replace("$", "")
+                  )
+                }
               ></input>
             </td>
           </tr>
@@ -115,14 +148,21 @@ const SettlementCosts = ({ firstMortgage = 12 }) => {
               {" "}
               <input
                 placeholder="Label if req."
+                className="labelifreq"
                 onChange={(e) => handleInputChange("label2", e.target.value)}
               ></input>
             </td>
             <td></td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
                 placeholder="$0"
-                onChange={(e) => handleInputChange("label2val", e.target.value)}
+                value={`$${costs.label2val ?? 0}`}
+                onChange={(e) =>
+                  handleInputChange(
+                    "label2val",
+                    e.target.value?.replace("$", "")
+                  )
+                }
               ></input>
             </td>
           </tr>
@@ -132,7 +172,7 @@ const SettlementCosts = ({ firstMortgage = 12 }) => {
               Term (m)
               <input
                 type="number"
-                placeholder="$0"
+                placeholder="0"
                 value={costs.prepaidInterestTerm}
                 onChange={(e) =>
                   handleInputChange("prepaidInterestTerm", e.target.value)
@@ -140,29 +180,31 @@ const SettlementCosts = ({ firstMortgage = 12 }) => {
               />
               Rate (pa)
               <input
-                type="number"
-                placeholder="$0"
-                step="null1"
-                value={costs.prepaidInterestRate}
+                value={`${costs.prepaidInterestRate ?? 0}%`}
                 onChange={(e) =>
-                  handleInputChange("prepaidInterestRate", e.target.value)
+                  handleInputChange(
+                    "prepaidInterestRate",
+                    e.target.value?.replace("%", "")
+                  )
                 }
               />
-              %
             </td>
-            <td>${calculatePrepaidInterest()}</td>
+            <td style={{ textAlign: "right" }}>
+              <input disabled value={`$${calculatePrepaidInterest()}`}></input>
+            </td>
           </tr>
           <tr>
             <td>Borrower cash distribution</td>
             <td></td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
-                type="number"
                 placeholder="$0"
-                step="null1"
-                value={costs.borrowerCashDistribution}
+                value={`${costs.borrowerCashDistribution ?? 0}%`}
                 onChange={(e) =>
-                  handleInputChange("borrowerCashDistribution", e.target.value)
+                  handleInputChange(
+                    "borrowerCashDistribution",
+                    e.target.value?.replace("%", "")
+                  )
                 }
               />
             </td>

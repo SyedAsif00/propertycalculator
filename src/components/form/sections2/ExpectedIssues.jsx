@@ -58,7 +58,7 @@ const ExpectedIssues = ({ initialData }) => {
               <td>
                 <input type="text" placeholder={item.issue} disabled />
               </td>
-              <td>
+              <td className="issues-td issues-td-1">
                 <input
                   type="checkbox"
                   checked={item.isChecked}
@@ -66,7 +66,7 @@ const ExpectedIssues = ({ initialData }) => {
                   className="redify"
                 />
               </td>
-              <td>
+              <td className="issues-td">
                 <input
                   type="text"
                   placeholder="Optional Comment"

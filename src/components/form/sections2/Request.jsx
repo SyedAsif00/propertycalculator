@@ -33,13 +33,13 @@ const Request = ({ initialData = {} }) => {
       <td>
         <input type="text" placeholder={label} disabled />
       </td>
-      <td>
+      <td className="request-td">
         {inputType === "select" ? (
           <select
-          style={{marginLeft:0}}
+          {...inputProps}
+            className="fifty-width"
             value={formData[fieldName]}
             onChange={(e) => handleInputChange(fieldName, e.target.value)}
-            {...inputProps}
           >
             {inputProps.options.map((option) => (
               <option key={option} value={option}>
@@ -49,11 +49,12 @@ const Request = ({ initialData = {} }) => {
           </select>
         ) : (
           <input
+            {...inputProps}
+            className="fifty-width"
             type={inputType}
             placeholder={placeholder}
             value={formData[fieldName]}
             onChange={(e) => handleInputChange(fieldName, e.target.value)}
-            {...inputProps}
           />
         )}
       </td>
@@ -63,7 +64,7 @@ const Request = ({ initialData = {} }) => {
   return (
     <div className="request_container">
       <h4>Requested Loan Terms</h4>
-      <table className="borrower_head">
+      <table className="borrower_head" >
         <tbody className="borrower_body">
           {renderInputRow(
             "loanTermIO",
@@ -97,7 +98,7 @@ const Request = ({ initialData = {} }) => {
                 "Full Doc",
               ],
               style: {
-                width: "100%", // Adjust width to fill the entire cell
+                // Adjust width to fill the entire cell
                 border: "none",
                 outline: "none",
                 color: "#6b79ff",
@@ -111,7 +112,7 @@ const Request = ({ initialData = {} }) => {
             "Preferred Settlement Date",
             "",
             "date",
-            { style: { width: "100%", color: "blue" } }
+            { style: { color: "blue" } }
           )}
 
           {renderInputRow(
@@ -121,7 +122,7 @@ const Request = ({ initialData = {} }) => {
             "date",
             {
               className: "pinkify",
-              style: { width: "100%", color: "#d76060" },
+              style: { color: "#d76060" },
             }
           )}
 
@@ -133,7 +134,7 @@ const Request = ({ initialData = {} }) => {
               "Urgent Creditor Payment",
             ],
             style: {
-              width: "100%", // Adjust width to fill the entire cell
+              // Adjust width to fill the entire cell
               border: "none",
               outline: "none",
               color: "#d76060",
@@ -143,7 +144,8 @@ const Request = ({ initialData = {} }) => {
           })}
 
           {renderInputRow("criticalComments", "Critical Comments", "", "text", {
-            className: "pinkify",
+            className: "pinkify redify",
+            style:{color:"rgb(215, 96, 96)"}
           })}
         </tbody>
       </table>

@@ -29,8 +29,8 @@ const RefinanceCosts = () => {
             </i>
           </tr>
           <tr>
-            <td>First Mortgage Balance</td>
-            <td>
+            <td style={{ textAlign: "left" }}>First Mortgage Balance</td>
+            <td className="refinanceinputs">
               <input
                 type="text"
                 placeholder="Name"
@@ -40,14 +40,15 @@ const RefinanceCosts = () => {
                 }
               />
             </td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
                 placeholder="$0"
-                className="right"
-                type="number"
-                value={refinanceData.firstMortgageBalance}
+                value={`$${refinanceData.firstMortgageBalance ?? 0}`}
                 onChange={(e) =>
-                  handleInputChange("firstMortgageBalance", e.target.value)
+                  handleInputChange(
+                    "firstMortgageBalance",
+                    e.target.value?.replace("$", "")
+                  )
                 }
               />
             </td>
@@ -55,21 +56,22 @@ const RefinanceCosts = () => {
           <tr>
             <td>First Mortgage Exit/Legal Fees</td>
             <td></td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
                 placeholder="$0"
-                className="right"
-                type="number"
-                value={refinanceData.firstMortgageExitFees}
+                value={`$${refinanceData.firstMortgageExitFees ?? 0}`}
                 onChange={(e) =>
-                  handleInputChange("firstMortgageExitFees", e.target.value)
+                  handleInputChange(
+                    "firstMortgageExitFees",
+                    e.target.value?.replace("$", "")
+                  )
                 }
               />
             </td>
           </tr>
           <tr>
             <td>Second Mortgage Balance</td>
-            <td>
+            <td className="refinanceinputs">
               <input
                 type="text"
                 placeholder="Name"
@@ -79,14 +81,15 @@ const RefinanceCosts = () => {
                 }
               />
             </td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
                 placeholder="$0"
-                className="right"
-                type="number"
-                value={refinanceData.secondMortgageBalance}
+                value={`$${refinanceData.secondMortgageBalance ?? 0}`}
                 onChange={(e) =>
-                  handleInputChange("secondMortgageBalance", e.target.value)
+                  handleInputChange(
+                    "secondMortgageBalance",
+                    e.target.value?.replace("$", "")
+                  )
                 }
               />
             </td>
@@ -94,11 +97,9 @@ const RefinanceCosts = () => {
           <tr>
             <td>Second Mortgage Exit/Legal Fees</td>
             <td></td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
                 placeholder="$0"
-                className="right"
-                type="number"
                 value={refinanceData.secondMortgageExitFees}
                 onChange={(e) =>
                   handleInputChange("secondMortgageExitFees", e.target.value)
@@ -108,9 +109,10 @@ const RefinanceCosts = () => {
           </tr>
           <tr>
             <td>Payout other creditor/s</td>
-            <td>
+            <td className="refinanceinputs">
               <input
                 type="text"
+                style={{ width: "80px" }}
                 placeholder="Creditor Name/s"
                 value={refinanceData.otherCreditorsNames}
                 onChange={(e) =>
@@ -118,14 +120,16 @@ const RefinanceCosts = () => {
                 }
               />
             </td>
-            <td>
+            <td style={{ textAlign: "right" }}>
               <input
                 placeholder="$0"
                 className="right"
-                type="number"
-                value={refinanceData.payoutOtherCreditors}
+                value={`$${refinanceData.payoutOtherCreditors}`}
                 onChange={(e) =>
-                  handleInputChange("payoutOtherCreditors", e.target.value)
+                  handleInputChange(
+                    "payoutOtherCreditors",
+                    e.target.value?.replace("$", "")
+                  )
                 }
               />
             </td>

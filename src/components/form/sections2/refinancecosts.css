@@ -1,3 +1,5 @@
 .refinance_costs input{
-    width: 80px;
+}
+.refinanceinputs{
+    transform: translateX(-80px);
 }

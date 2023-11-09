@@ -7,6 +7,6 @@ select {
   padding: 3px !important;
 }
 
-td {
+td:not(.bolder) {
   font-weight: 400 !important;
 }

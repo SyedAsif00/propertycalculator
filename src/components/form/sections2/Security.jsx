@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { DataContext } from "../Form2";
 import formatNumberWithCommas from "./utils";
-
 const getDefaultRow = () => ({
   estValue: 0,
   newLVR: 0,
@@ -19,7 +19,7 @@ const PropertyInput = ({ index, onChange, value }) => (
 );
 
 const Security = (props) => {
-  let [propertyInfo, setPropertyInfo] = useState([
+  const [propertyInfo, setPropertyInfo] = useState([
     getDefaultRow(),
     getDefaultRow(),
     getDefaultRow(),
@@ -27,39 +27,56 @@ const Security = (props) => {
     getDefaultRow(),
   ]);
 
-  const handlePropertyInfoChange = (index, property) => {
+  const cashOut = propertyInfo?.reduce(
+    (acc, property) =>
+      Number(acc) +
+      Number((property?.currentLoan || 0) - (property?.estValue || 0)),
+    0
+  );
+  const { updateData } = useContext(DataContext);
+
+  const handlePropertyInfoChange = (index, updatedProperty) => {
     const updatedPropertyInfo = [...propertyInfo];
-    updatedPropertyInfo[index] = property;
+    updatedPropertyInfo[index] = updatedProperty;
     setPropertyInfo(updatedPropertyInfo);
+    updateData("security", updatedPropertyInfo);
   };
 
   useEffect(() => {
     // calculate the other stuff
-    propertyInfo = propertyInfo.map((property) => {
+    const updatedPropertyInfo = propertyInfo.map((property) => {
       return {
         ...property,
         newLoan: property.estValue * (property.newLVR / 100),
-        cashOut: -property.currentLoan + property.newLoan,
+        cashOut:
+          -property.currentLoan + property.estValue * (property.newLVR / 100),
       };
     });
+    updateData(
+      "firstMortgage",
+      updatedPropertyInfo?.reduce(
+        (acc, property) => Number(acc) + Number(property?.newLoan || 0),
+        0
+      )
+    );
+    setPropertyInfo(updatedPropertyInfo);
   }, [propertyInfo, props]);
 
-  console.log(propertyInfo);
   return (
     <div className="borrower_body">
       <h4>Security (property/ies offered for security)</h4>
       <table className="borrower_head">
         <thead>
           <tr>
-            <th style={{ width: "15%" }}>Street Address</th>
-            <th>Suburb</th>
-            <th style={{ width: "15%" }}>State</th>
-            <th>Postcode</th>
-            <th>Est Value</th>
-            <th className="smaller">New LVR</th>
-            <th className="smaller">New Loan</th>
-            <th className="smaller">Current Loan</th>
-            <th className="smaller">Cash Out</th>
+            <th style={{ width: "20%" }}>Street Address</th>
+            <th style={{ width: "10%" }}>Suburb</th>
+            <th style={{ width: "10%" }}>State</th>
+            <th style={{ width: "10%" }}>Postcode</th>
+            <th style={{ width: "10%" }}>Est Value</th>
+            <th style={{ width: "10%" }}>New LVR</th>
+            <th style={{ width: "10%" }}>New Loan</th>
+            <th style={{ width: "12%" }}>Current Loan</th>
+            <th style={{ width: "10%" }}>Cash Out</th>
           </tr>
         </thead>
         <tbody className="borrower_body">
@@ -92,7 +109,7 @@ const Security = (props) => {
               <td>
                 <select
                   style={{
-                    width: "60%",
+                    width: "100%",
                     border: "none",
                     outline: "none",
                     color: "#6b79ff",
@@ -137,6 +154,7 @@ const Security = (props) => {
                 <input
                   type="text"
                   placeholder="New LVR"
+                  className="color-blue"
                   value={`${property.newLVR}%`}
                   onChange={(e) => {
                     handlePropertyInfoChange(index, {
@@ -161,7 +179,7 @@ const Security = (props) => {
                   onChange={(e, value) =>
                     handlePropertyInfoChange(index, {
                       ...property,
-                      currentLoan: parseFloat(e.target.value) || 0,
+                      currentLoan: parseFloat(value) || 0,
                     })
                   }
                 />
@@ -170,7 +188,7 @@ const Security = (props) => {
                 <input
                   type="text"
                   placeholder="Cash Out"
-                  style={{ color: property.cashOut < 0 && "red" }}
+                  className={property.cashOut < 0 && "redify"}
                   value={`$${Math.abs(property.cashOut?.toFixed(0))}`}
                   disabled
                 />
@@ -219,7 +237,18 @@ const Security = (props) => {
               />
             </td>
             <td>
-              <input type="text" placeholder="$0" disabled className="bolder" />
+              <input
+                type="text"
+                disabled
+                className="bolder"
+                placeholder={`$${formatNumberWithCommas(
+                  propertyInfo?.reduce(
+                    (acc, property) =>
+                      Number(acc) + Number(property?.newLoan || 0),
+                    0
+                  )?.toFixed(2)
+                )}`}
+              />
             </td>
             <td>
               <input
@@ -238,18 +267,11 @@ const Security = (props) => {
             <td>
               <input
                 type="text"
+                className={cashOut < 0 ? "redify bolder" : "bolder"}
                 placeholder={`$${formatNumberWithCommas(
-                  propertyInfo?.reduce(
-                    (acc, property) =>
-                      Number(acc) +
-                      Number(
-                        (property?.currentLoan || 0) - (property?.estValue || 0)
-                      ),
-                    0
-                  )
+                  Math.abs(cashOut)
                 )}`}
                 disabled
-                className="bolder"
               />
             </td>
           </tr>
