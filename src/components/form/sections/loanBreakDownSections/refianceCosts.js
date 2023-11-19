@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import formatNumberWithCommas from "./utils";
 import "./refinanceCosts.css";
 
-const RefinanceCosts = () => {
+const RefinanceCosts = ({ onTotalChange }) => {
   const [refinanceData, setRefinanceData] = useState({
     firstMortgageBalance: 0,
     firstMortgageExitFees: 0,
@@ -20,6 +20,20 @@ const RefinanceCosts = () => {
       [key]: isNaN(parseFloat(value)) ? value : parseFloat(value) || 0,
     }));
   };
+
+  useEffect(() => {
+    const total =
+      refinanceData.firstMortgageBalance +
+      refinanceData.firstMortgageExitFees +
+      refinanceData.secondMortgageBalance +
+      refinanceData.secondMortgageExitFees +
+      refinanceData.payoutOtherCreditors;
+
+    onTotalChange(total);
+  }, [refinanceData, onTotalChange]);
+
+  const formatValueWithDollarSign = (value) =>
+    `$${formatNumberWithCommas(value)}`;
 
   return (
     <div>
@@ -118,6 +132,26 @@ const RefinanceCosts = () => {
             </td>
           </tr>
         </tbody>
+        <tfoot style={{ borderTop: "1px solid black" }}>
+          <tr>
+            <td>
+              <input value={"Total"} disabled></input>
+            </td>
+            <td style={{ width: "80px" }} className="bolder">
+              <input
+                className="bolder"
+                value={formatValueWithDollarSign(
+                  refinanceData.firstMortgageBalance +
+                    refinanceData.firstMortgageExitFees +
+                    refinanceData.secondMortgageBalance +
+                    refinanceData.secondMortgageExitFees +
+                    refinanceData.payoutOtherCreditors
+                )}
+                disabled
+              ></input>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

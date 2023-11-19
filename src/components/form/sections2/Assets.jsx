@@ -112,6 +112,7 @@ const Assets = ({ initialData }) => {
   return (
     <div>
       <h4>Assets & Liabilities</h4>
+      <h4>Assets & Liabilities</h4>
       <table className="borrower_head">
         <thead>
           <tr>
@@ -122,6 +123,8 @@ const Assets = ({ initialData }) => {
             <th>LVR</th>
           </tr>
         </thead>
+        {/* Add your table body here */}
+
         <tbody className="borrower_body">
           {properties.map((property, index) => (
             <tr key={index}>
@@ -133,7 +136,7 @@ const Assets = ({ initialData }) => {
                   onChange={(e) => handleNameChange(index, e.target.value)}
                 />
               </td>
-              <td>
+              <td style={{ paddingLeft: "8%" }}>
                 <input
                   type="text"
                   placeholder="$0"
@@ -150,7 +153,7 @@ const Assets = ({ initialData }) => {
                   }
                 />
               </td>
-              <td>
+              <td style={{ paddingLeft: "8%" }}>
                 <input
                   type="text"
                   placeholder="$0"
@@ -203,7 +206,7 @@ const Assets = ({ initialData }) => {
                 className="bolder"
               />
             </td>
-            <td>
+            <td td style={{ paddingLeft: "6%" }}>
               <input
                 type="text"
                 placeholder={`$${properties
@@ -213,7 +216,7 @@ const Assets = ({ initialData }) => {
                 className="bolder"
               />
             </td>
-            <td>
+            <td td style={{ paddingLeft: "6%" }}>
               <input
                 type="text"
                 placeholder={`$${properties
@@ -231,7 +234,7 @@ const Assets = ({ initialData }) => {
                 className="bolder"
               />
             </td>
-            <td>
+            <td td style={{ paddingLeft: "-1%" }}>
               <input
                 type="text"
                 placeholder={`$${calculateLVR()}`}

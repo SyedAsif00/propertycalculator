@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import formatNumberWithCommas from "./utils";
 import "./refinancecosts.css";
+
 const RefinanceCosts = () => {
   const [refinanceData, setRefinanceData] = useState({
     firstMortgageBalance: null,
@@ -18,6 +20,12 @@ const RefinanceCosts = () => {
       [key]: isNaN(parseFloat(value)) ? value : parseFloat(value) || 0,
     }));
   };
+
+  // Calculate the total for refinance costs
+  const total = Object.values(refinanceData).reduce(
+    (acc, value) => acc + (parseFloat(value) || 0),
+    0
+  );
 
   return (
     <div>
@@ -135,6 +143,27 @@ const RefinanceCosts = () => {
             </td>
           </tr>
         </tbody>
+        <tfoot style={{ borderTop: "1px solid black" }}>
+          <tr>
+            <td style={{ transform: "translateX(30px)" }}>
+              <input value={"Total"} disabled></input>
+            </td>
+            <td
+              style={{
+                width: "80px",
+                transform: "translateX(240px)",
+                textAlign: "right",
+              }}
+              className="bolder"
+            >
+              <input
+                className="bolder"
+                value={"$" + formatNumberWithCommas(total)}
+                disabled
+              ></input>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

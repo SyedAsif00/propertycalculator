@@ -5,7 +5,7 @@ input:not(:disabled)::placeholder {
 
 input {
   background-color: white !important;
-  color: #0432ff ;
+  color: #0432ff;
 }
 select {
   transform: translateX(-2px);
@@ -15,7 +15,7 @@ select {
   font-weight: inherit;
   font-family: inherit;
   font-size: 11px !important;
-  color: #0432ff ;
+  color: #0432ff;
 }
 select::-ms-expand {
   display: none;
@@ -60,17 +60,17 @@ select {
   transform: translateX(-120px);
 }
 input:disabled {
-  color: black ;
+  color: black;
 }
 
-td{
+td {
   font-size: 11px !important;
 }
-td.bolder{
+td.bolder {
   font-weight: 900;
 }
 
-.labelifreq{
+.labelifreq {
   width: 140px !important;
   transform: translateX(-2.5px);
 }

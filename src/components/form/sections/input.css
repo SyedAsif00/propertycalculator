@@ -1,0 +1,13 @@
+input:not(:disabled)::placeholder {
+  color: #0432ff !important;
+  background-color: white !important;
+}
+
+.right-aligned-input {
+  text-align: right !important;
+}
+
+input {
+  background-color: white !important;
+  color: #0432ff;
+}
