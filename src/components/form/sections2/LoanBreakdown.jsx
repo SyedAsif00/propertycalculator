@@ -45,6 +45,29 @@ const LoanBreakdown = () => {
       0
     );
 
+  const [childTotals, setChildTotals] = useState({
+    purchaseCosts: 0,
+    refinanceCosts: 0,
+    settlementCosts: 0,
+  });
+
+  // Function to update the totals from child components
+  const updateChildTotals = (child, total) => {
+    setChildTotals((prevTotals) => ({
+      ...prevTotals,
+      [child]: total,
+    }));
+  };
+
+  const finaltotal =
+    childTotals.purchaseCosts +
+    childTotals.refinanceCosts +
+    childTotals.settlementCosts +
+    Object.values(data.sources).reduce(
+      (acc, value) => acc + parseFloat(value ? value : 0),
+      0
+    );
+
   return (
     <div>
       <h4>Requested Loan Breakdown</h4>
@@ -58,7 +81,7 @@ const LoanBreakdown = () => {
         <tbody>
           <tr key={"firstMortgage"}>
             <td style={{ fontWeight: "400" }}>{labels["firstMortgage"]}</td>
-            <td style={{ textAlign: "right" }}>
+            <td style={{ textAlign: "right", transform: "translateX(-25px)" }}>
               <input
                 placeholder={placeholders["firstMortgage"]}
                 type="text"
@@ -70,7 +93,9 @@ const LoanBreakdown = () => {
           {Object.keys(data.sources).map((key) => (
             <tr key={key}>
               <td style={{ fontWeight: "400" }}>{labels[key]}</td>
-              <td style={{ textAlign: "right" }}>
+              <td
+                style={{ textAlign: "right", transform: "translateX(-25px)" }}
+              >
                 <input
                   placeholder={placeholders[key]}
                   type="text"
@@ -91,7 +116,10 @@ const LoanBreakdown = () => {
             <td>
               <input value={"Total"} disabled></input>
             </td>
-            <td style={{ width: "40px" }} className="bolder">
+            <td
+              style={{ width: "40px", transform: "translateX(-25px)" }}
+              className="bolder"
+            >
               <input
                 className="bolder"
                 value={"$" + formatNumberWithCommas(total)}

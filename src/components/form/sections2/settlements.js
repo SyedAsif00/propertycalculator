@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import formatNumberWithCommas from "./utils";
 import { DataContext } from "../Form2";
 
 const SettlementCosts = ({}) => {
@@ -16,6 +17,7 @@ const SettlementCosts = ({}) => {
     prepaidInterest: null,
     borrowerCashDistribution: null, // negative value as per the example given
   });
+
   const {
     data: { firstMortgage = null },
   } = useContext(DataContext);
@@ -30,15 +32,19 @@ const SettlementCosts = ({}) => {
     }));
   };
 
-  console.log(costs, firstMortgage);
   const calculatePrepaidInterest = () => {
-    // Assuming a basic calculation for prepaid interest
-    // This will likely need to be updated with the correct logic
     const interest =
       -(costs.prepaidInterestTerm * costs.prepaidInterestRate * firstMortgage) /
       12;
     return parseFloat(interest?.toFixed(2));
   };
+
+  // Calculate the total for settlement costs
+  const total = Object.values(costs).reduce(
+    (acc, value) => acc + (parseFloat(value) || 0),
+    0
+  );
+
   return (
     <div>
       <table className="settlement_costs" style={{ marginTop: "20px" }}>
@@ -49,9 +55,16 @@ const SettlementCosts = ({}) => {
             </i>
           </tr>
           <tr>
-            <td>Ancillary (overdue rates, water, land tax)</td>
+            <td style={{ textAlign: "left" }}>
+              Ancillary (overdue rates, water, land tax)
+            </td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 placeholder="$0"
                 value={`$${costs.ancillary ?? 0}`}
@@ -65,7 +78,7 @@ const SettlementCosts = ({}) => {
             </td>
           </tr>
           <tr>
-            <td>Lender Estab Fee (inc GST)</td>
+            <td style={{ textAlign: "left" }}>Lender Estab Fee (inc GST)</td>
             <td>
               <input
                 placeholder="$0"
@@ -76,20 +89,27 @@ const SettlementCosts = ({}) => {
                     e.target.value?.replace("%", "")
                   )
                 }
+                style={{
+                  textAlign: "left",
+                  transform: "translateX(-50px)",
+                }}
               />
             </td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 className="reee"
                 disabled
-                value={`$
-                ${costs.lenderEstabFee}
-                `}
+                value={`$${costs.lenderEstabFee}`}
               />
             </td>
           </tr>
           <tr>
-            <td>Brokerage Fee (inc GST)</td>
+            <td style={{ textAlign: "left" }}>Brokerage Fee (inc GST)</td>
             <td>
               <input
                 placeholder="$0"
@@ -100,9 +120,18 @@ const SettlementCosts = ({}) => {
                     e.target.value?.replace("%", "")
                   )
                 }
+                style={{
+                  textAlign: "left",
+                  transform: "translateX(-50px)",
+                }}
               />
             </td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 disabled
                 value={`$${
@@ -112,9 +141,14 @@ const SettlementCosts = ({}) => {
             </td>
           </tr>
           <tr>
-            <td>Lender Legal Fee</td>
+            <td style={{ textAlign: "left" }}>Lender Legal Fee</td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 disabled
                 value={`$${costs.lenderLegalFee?.toFixed(2) ?? 0}`}
@@ -130,7 +164,12 @@ const SettlementCosts = ({}) => {
               ></input>
             </td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 placeholder="$0"
                 value={`$${costs.label2val ?? 0}`}
@@ -153,7 +192,12 @@ const SettlementCosts = ({}) => {
               ></input>
             </td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 placeholder="$0"
                 value={`$${costs.label2val ?? 0}`}
@@ -168,7 +212,13 @@ const SettlementCosts = ({}) => {
           </tr>
           <tr>
             <td>Prepaid Interest (Est)</td>
-            <td>
+            <td
+              style={{
+                display: "flex",
+                textAlign: "left",
+                transform: "translateX(-50px)",
+              }}
+            >
               Term (m)
               <input
                 type="number"
@@ -189,14 +239,19 @@ const SettlementCosts = ({}) => {
                 }
               />
             </td>
-            <td style={{ textAlign: "right" }}>
+            <td style={{ textAlign: "right", transform: "translateX(-25px)" }}>
               <input disabled value={`$${calculatePrepaidInterest()}`}></input>
             </td>
           </tr>
           <tr>
-            <td>Borrower cash distribution</td>
+            <td style={{ textAlign: "left" }}>Borrower cash distribution</td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 placeholder="$0"
                 value={`${costs.borrowerCashDistribution ?? 0}%`}
@@ -210,6 +265,27 @@ const SettlementCosts = ({}) => {
             </td>
           </tr>
         </tbody>
+        <tfoot style={{ borderTop: "1px solid black" }}>
+          <tr>
+            <td>
+              <input value={"Total"} disabled></input>
+            </td>
+            <td
+              style={{
+                width: "80px",
+                transform: "translateX(170px)",
+                textAlign: "right",
+              }}
+              className="bolder"
+            >
+              <input
+                className="bolder"
+                value={"$" + formatNumberWithCommas(total)}
+                disabled
+              ></input>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

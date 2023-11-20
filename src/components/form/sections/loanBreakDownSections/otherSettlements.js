@@ -1,33 +1,49 @@
 import React, { useState } from "react";
 
-const OtherSettlementCosts = ({ mortgage = 10000 }) => {
+const OtherSettlementCosts = ({ mortgage = 10000, onTotalChange }) => {
   const [formData, setFormData] = useState({
-    ancillary: 0,
-    lenderEstabFeeRate: 0,
-    brokerageFeeRate: 0,
-    label1: "",
-    label2: "",
-    prepaidInterestTerm: 0,
-    prepaidInterestRate: 0,
-    lenderLegalFee: 0,
-    borrowerCashDistribution: -43520,
+    sources: {
+      ancillary: 0,
+      lenderEstabFeeRate: 0,
+      brokerageFeeRate: 0,
+      label1: "",
+      label2: "",
+      prepaidInterestTerm: 0,
+      prepaidInterestRate: 0,
+      lenderLegalFee: 0,
+      borrowerCashDistribution: -43520,
+    },
   });
 
-  const handleInputChange = (name, value) => {
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const handleInputChange = (key, value) => {
+    setFormData((prevCosts) => ({
+      sources: {
+        ...prevCosts.sources,
+        [key]: parseFloat(value) || 0,
+      },
+    }));
   };
-
   const calculateFee = (rate, value) => {
     return (rate / 100) * value;
   };
 
-  const displayValue = (value) => {
-    if (!value || isNaN(value)) {
-      return "$0.00";
-    }
-    return parseFloat(value).toFixed(2);
-  };
+  const total = Object.values(formData.sources).reduce(
+    (acc, value) => acc + parseFloat(value ? value : 0),
+    0
+  );
 
+  // useEffect(() => {
+  //   const total =
+  //     formData.ancillary +
+  //     calculateFee(formData.lenderEstabFeeRate, mortgage) +
+  //     calculateFee(formData.brokerageFeeRate, mortgage) +
+  //     formData.lenderLegalFee +
+  //     formData.prepaidInterestTerm +
+  //     formData.prepaidInterestRate +
+  //     formData.borrowerCashDistribution;
+
+  //   onTotalChange(total);
+  // }, [formData, mortgage, onTotalChange]);
   return (
     <div>
       <h2>Other Settlement Costs</h2>
@@ -144,6 +160,20 @@ const OtherSettlementCosts = ({ mortgage = 10000 }) => {
             </td>
           </tr>
         </tbody>
+        <tfoot style={{ borderTop: "1px solid black" }}>
+          <tr>
+            <td>
+              <input value={"Total"} disabled></input>
+            </td>
+            <td style={{ width: "80px" }} className="bolder">
+              <input
+                className="bolder"
+                value={formatValueWithDollarSign(total)}
+                disabled
+              ></input>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

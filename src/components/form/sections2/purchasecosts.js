@@ -3,23 +3,32 @@ import formatNumberWithCommas from "./utils";
 
 const PurchaseCosts = () => {
   const [costs, setCosts] = useState({
-    contractPrice: 0,
-    gst: 0,
-    stampDuty: 0,
-    depositPaid: 0,
+    sources: {
+      contractPrice: 0,
+      gst: 0,
+      stampDuty: 0,
+      depositPaid: 0,
+    },
   });
 
   const handleInputChange = (key, value) => {
     setCosts((prevCosts) => ({
-      ...prevCosts,
-      [key]: value,
+      sources: {
+        ...prevCosts.sources,
+        [key]: parseFloat(value) || 0,
+      },
     }));
   };
 
   const gstAmount =
     costs.contractPrice && costs.gst
-      ? (costs.contractPrice * costs.gst) / 100
+      ? (costs.contractPrice * parseFloat(costs.gst)) / 100
       : 0;
+
+  const total = Object.values(costs.sources).reduce(
+    (acc, value) => acc + parseFloat(value ? value : 0),
+    0
+  );
 
   return (
     <div>
@@ -37,41 +46,46 @@ const PurchaseCosts = () => {
             <td></td>
           </tr>
           <tr>
-            <td>Contract Price</td>
+            <td style={{ textAlign: "left" }}>Contract Price</td>
             <td></td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
-                value={`$${costs.contractPrice ?? 0}`}
+                value={costs.contractPrice}
                 className={costs.contractPrice < 0 && "redify"}
                 onChange={(e) =>
-                  handleInputChange(
-                    "contractPrice",
-                    e.target.value?.replace("$", "")
-                  )
+                  handleInputChange("contractPrice", e.target.value)
                 }
                 placeholder="$0"
               />
             </td>
           </tr>
           <tr>
-            <td>GST</td>
+            <td style={{ textAlign: "left" }}>GST</td>
             <td>
               <input
                 style={{
                   width: "60px",
                   textAlign: "left",
-                  transform: "translateX(-45px)",
+                  transform: "translateX(-23px)",
                 }}
                 placeholder="0"
-                value={`${costs.gst}%`}
-                onChange={(e) =>
-                  handleInputChange("gst", e.target.value?.replace("%", ""))
-                }
+                value={costs.gst}
+                onChange={(e) => handleInputChange("gst", e.target.value)}
               />
             </td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
                 disabled
                 value={`$${formatNumberWithCommas(gstAmount)}`}
@@ -79,7 +93,7 @@ const PurchaseCosts = () => {
             </td>
           </tr>
           <tr>
-            <td>Stamp Duty</td>
+            <td style={{ textAlign: "left" }}>Stamp Duty</td>
             <td>
               <select
                 style={{
@@ -91,49 +105,64 @@ const PurchaseCosts = () => {
                   handleInputChange("stampDutyState", e.target.value)
                 }
               >
-                <option value="NSW">NSW</option>
-                <option value="VIC">VIC</option>
-                <option value="QLD">QLD</option>
-                <option value="WA">WA</option>
-                <option value="SA">SA</option>
-                <option value="TAS">TAS</option>
-                <option value="ACT">ACT</option>
-                <option value="NT">NT</option>
+                {/* ... (options) */}
               </select>
             </td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
-                value={`$${costs.stampDuty ?? 0}`}
-                onChange={(e) =>
-                  handleInputChange(
-                    "stampDuty",
-                    e.target.value?.replace("$", "")
-                  )
-                }
+                value={costs.stampDuty}
+                onChange={(e) => handleInputChange("stampDuty", e.target.value)}
                 placeholder="$0"
               />
             </td>
           </tr>
           <tr>
-            <td>Deposit Paid</td>
+            <td style={{ textAlign: "left" }}>Deposit Paid</td>
             <td></td>
             <td></td>
-            <td style={{ textAlign: "right" }}>
+            <td
+              style={{
+                textAlign: "right",
+                transform: "translateX(-25px)",
+              }}
+            >
               <input
-                value={`$${costs.depositPaid ?? 0}`}
+                value={costs.depositPaid}
                 className={costs.depositPaid < 0 && "redify"}
                 onChange={(e) =>
-                  handleInputChange(
-                    "depositPaid",
-                    e.target.value?.replace("$", "")
-                  )
+                  handleInputChange("depositPaid", e.target.value)
                 }
                 placeholder="$0"
               />
             </td>
           </tr>
         </tbody>
+        <tfoot style={{ borderTop: "1px solid black" }}>
+          <tr>
+            <td>
+              <input value={"Total"} disabled></input>
+            </td>
+            <td
+              style={{
+                width: "80px",
+                transform: "translateX(285px)",
+                textAlign: "right",
+              }}
+            >
+              <input
+                className="bolder"
+                value={"$" + formatNumberWithCommas(total)}
+                disabled
+              ></input>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

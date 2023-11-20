@@ -3,25 +3,24 @@
 }
 .homeContainer {
   flex: 6;
-  padding:20px;
+  padding: 20px;
 }
 
 .neg {
   color: red;
   display: flex;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
 }
 
 .pos {
   color: green;
   display: flex;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
 }
 
 .row-center {
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
-

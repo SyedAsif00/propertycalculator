@@ -1,5 +1,7 @@
-.refinance_costs input{
+.refinance_costs input {
+  transform: translateX(-25px);
 }
-.refinanceinputs{
-    transform: translateX(-80px);
+.refinanceinputs {
+  transform: translateX(-60px);
+  text-align: left;
 }
